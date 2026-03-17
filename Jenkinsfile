@@ -1,6 +1,11 @@
-piprline{
+pipeline{
 
     agent any
+
+    environment{
+        DOCKERIMG= "maheshg98/trivia_backend:${BUILD_NUMBER}"
+        CONTNRNAME= 'trivia_backend'
+    }
 
     stages{
 
@@ -13,7 +18,7 @@ piprline{
 
         stage('build-image'){
             steps{
-            sh "docker build -t maheshg98/Trivia_backend:${BUILD_NUMBER}"
+            sh "docker build -t ${DOCKERIMG}  ."
             }
         }
 
@@ -22,19 +27,19 @@ piprline{
 
             sh """
                     docker login -u maheshg98 -p Mahesh@8798
-                    docker push maheshg98/Trivia_backend:${BUILD_NUMBER}
+                    docker push ${DOCKERIMG}
 
             """
-            }
+               }
             }
 
             stage('Deployment'){
                 steps{
 
                         sh  """
-                        docker kill Trivia_backend || true
-                        docker rm Trivia_backend || true
-                        docker run -itd -p 3000:3000 --name Trivia_backend maheshg98/Trivia_backend:${BUILD_NUMBER}
+                        docker kill ${CONTNRNAME} || true
+                        docker rm ${CONTNRNAME} || true
+                        docker run -itd -p 3000:3000 --name ${CONTNRNAME} ${DOCKERIMG}
 
                     """
                 }
