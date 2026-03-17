@@ -6,6 +6,7 @@ pipeline {
         DOCKERIMG = "maheshg98/trivia_backend:${BUILD_NUMBER}"
         CONTNRNAME = 'trivia_backend'
         NETWORK = "trivia-network"
+        VOLUME = "monodb_data_trivia"
     }
 
     stages {
@@ -35,14 +36,25 @@ pipeline {
         stage('Deployment') {
             steps {
                 sh """
-                    # Starting MONOGO DB if it is already present thencreateing new Container
-                     docker start mongodb || docker run -d  --name mongodb -p 27017:27017  --network ${NETWORK} mongo
+                    # Starting MONOGO DB if it is already present then createing new Container
+                    docker start mongodb || docker run -d \
+                     --name mongodb \
+                     --network ${NETWORK} \
+                     -p 27017:27017 \
+                     -v ${VOLUME}:/data/db \
+                     --restart unless-stopped \
+                      mongo
 
                      sleep 10
 
                     docker kill ${CONTNRNAME} || true
                     docker rm ${CONTNRNAME} || true
-                    docker run -itd -p 3000:3000 --name ${CONTNRNAME} --network ${NETWORK} ${DOCKERIMG}
+                    docker run -d \
+                    -p 3000:3000 \
+                    --name ${CONTNRNAME} \
+                    --network ${NETWORK} \
+                    --restart unless-stopped
+                    ${DOCKERIMG}
                 """
             }
         }
