@@ -53,7 +53,7 @@ pipeline {
                     -p 3000:3000 \
                     --name ${CONTNRNAME} \
                     --network ${NETWORK} \
-                    --restart unless-stopped
+                    --restart unless-stopped \
                     ${DOCKERIMG}
                 """
             }
