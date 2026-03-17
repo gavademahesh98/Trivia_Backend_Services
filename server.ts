@@ -10,10 +10,8 @@ const app = express();
 app.use(compression());
 app.use(express.json());
 app.use(cors({
-    origin: [
-        "http://localhost:5173"
-    ]
-}))
+  origin: "*"
+}));
 app.use(express.urlencoded());
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
