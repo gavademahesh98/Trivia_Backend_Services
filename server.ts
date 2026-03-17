@@ -7,12 +7,15 @@ import ensureInitialData from "./import"
 import apiRouter from "./api"
 
 const app = express();
+
 app.use(compression());
 app.use(express.json());
+
 app.use(cors({
   origin: "*"
 }));
-app.use(express.urlencoded());
+
+app.use(express.urlencoded({ extended: true }));
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
