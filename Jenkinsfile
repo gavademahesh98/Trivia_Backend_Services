@@ -38,6 +38,8 @@ pipeline {
                     # Starting MONOGO DB if it is already present thencreateing new Container
                      docker start mongodb || docker run -d  --name mongodb -p 27017:27017  --network ${NETWORK} mongo
 
+                     sleep 10
+
                     docker kill ${CONTNRNAME} || true
                     docker rm ${CONTNRNAME} || true
                     docker run -itd -p 3000:3000 --name ${CONTNRNAME} --network ${NETWORK} ${DOCKERIMG}
