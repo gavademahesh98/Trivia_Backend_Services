@@ -18,7 +18,7 @@ app.use(express.urlencoded());
 
 const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
 
-const mongoDbUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/trivia';
+const mongoDbUri = process.env.MONGODB_URI || 'mongodb://mongodb:27017/trivia';
 console.log(mongoDbUri);
 const db = mongoose.connect(mongoDbUri, {
     connectTimeoutMS: 1000,
